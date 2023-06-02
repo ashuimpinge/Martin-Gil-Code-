@@ -1,0 +1,72 @@
+﻿@page "/users"
+@using MartinGilDemo.Shared;
+@using MartinGilDemo.Client.Services;
+@inject IUserService userService;
+
+<PageTitle>Index</PageTitle>
+<h3>Users List</h3>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <a href='/user/add' class="btn btn-primary" role="button">
+            <i class="fas fa-user-plus"></i>
+              Add User
+        </a>
+    </div>
+</div>
+
+<div>
+
+</div>
+
+
+@if (userList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped align-middle table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>Id</th>
+                <th>FirstName </th>
+                <th>LastName </th>
+                <th>MobileNumber </th>
+                <th>Email </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in userList)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.MobileNumber</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <a href='/user/edit/@user.Id' class="btn btn-outline-dark" role="button">
+                            Edit
+                        </a>
+                        <a href='/user/delete/@user.Id' class="btn btn-outline-danger" role="button">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private IEnumerable<Person> userList = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userList = await userService.GetAll();
+    }
+}
