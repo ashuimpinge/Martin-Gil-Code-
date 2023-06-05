@@ -41,6 +41,9 @@ namespace MartinGilDemoAPI
             app.UseAuthorization();
 
             app.UseCors();
+            app.UseRouting();
+
+            
             app.MapControllers();
 
             app.Run();

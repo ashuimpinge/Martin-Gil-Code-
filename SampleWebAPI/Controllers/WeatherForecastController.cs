@@ -27,12 +27,13 @@ namespace MartinGilDemoAPI.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(int id)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetOne(int Id)
         {
             await Db.Connection.OpenAsync();
             var query = new Query(Db);
-            var result = await query.FindOneAsync(id);
+            var result = await query.FindOneAsync(Id);
             if (result is null)
                 return new NotFoundResult();
             return new OkObjectResult(result);
@@ -68,7 +69,7 @@ namespace MartinGilDemoAPI.Controllers
             result.Email = body.Email;
 
             await result.UpdateAsync();
-            return new OkObjectResult(result);
+            return new OkObjectResult(result.Id);
         }
 
         [HttpDelete("{id}")]

@@ -1,6 +1,7 @@
 ﻿@page "/users"
 @using MartinGilDemo.Shared;
 @using MartinGilDemo.Client.Services;
+@inject NavigationManager NavigationManager
 @inject IUserService userService;
 
 <PageTitle>Index</PageTitle>
@@ -51,9 +52,10 @@ else
                         <a href='/user/edit/@user.Id' class="btn btn-outline-dark" role="button">
                             Edit
                         </a>
-                        <a href='/user/delete/@user.Id' class="btn btn-outline-danger" role="button">
+                        @*<a href='/user/delete/@user.Id' class="btn btn-outline-danger" role="button">
                             Delete
-                        </a>
+                        </a>*@
+                        <button class="btn btn-danger" @onclick="async () => await DeleteUserId(user.Id)"><span class="oi oi-trash" /></button>
                     </td>
                 </tr>
             }
@@ -68,5 +70,20 @@ else
     protected override async Task OnInitializedAsync()
     {
         userList = await userService.GetAll();
+    }
+
+    private async Task DeleteUserId(int id)
+    {
+        // await empService.DeleteEmployee(Convert.ToString(id), department);
+        // employees = await empService.GetEmployeeDetails();
+
+        await userService.DeleteUser(id);
+
+        Cancel();
+    }
+
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/users");
     }
 }

@@ -61,7 +61,7 @@
         if (Id != 0)
         {
             Title = "Edit";
-           // user = await userService.GetUserById(Id);
+            user = await userService.GetUserById(Id);
         }
     }
     protected async Task SaveUser()
@@ -69,7 +69,15 @@
         message = string.Empty;
         if (user.Id != 0)
         {
-            await Http.PutAsJsonAsync("api/User", user);
+          
+            var id = await userService.UpdateUserDetails(user);
+            if (true)
+            {
+                Cancel();
+
+            }
+
+            message = "Something went wrong, please try again.";
         }
         else
         {

@@ -7,15 +7,15 @@ namespace MartinGilDemo.Client.Services
     public interface IUserService
     {
         Task<IEnumerable<Person>> GetAll();
-        
+
         Task<int> AddUser(Person person);
 
-        Task<IEnumerable<Person>> GetUserById(int Id);
-        
-        // public void AddUser(User user);
-        //  public void UpdateUserDetails(User user);
-        // public User GetUserData(int id);
-        //  public void DeleteUser(int id);
+        Task<Person> GetUserById(int Id);
+
+        Task<int> UpdateUserDetails(Person person);
+        Task<int> DeleteUser(int id);
+
+        //public void DeleteUser(int id);
     }
 
     public class UserService : IUserService
@@ -34,12 +34,23 @@ namespace MartinGilDemo.Client.Services
 
         public async Task<int> AddUser(Person person)
         {
-            return await _httpService.Post<int>("/api/WeatherForecast",person);
+            return await _httpService.Post<int>("/api/WeatherForecast", person);
         }
 
-        public async Task<IEnumerable<Person>> GetUserById(int Id)
+        public async Task<Person> GetUserById(int Id)
         {
-            return await _httpService.Get<IEnumerable<Person>>("/api/WeatherForecast");
+            return await _httpService.Get<Person>("/api/WeatherForecast/" + Id);
+        }
+
+        //Need to check 
+        public async Task<int> UpdateUserDetails(Person person)
+        {
+            return await _httpService.Put<int>("/api/WeatherForecast/" + person.Id, person);
+        }
+
+        public async Task<int> DeleteUser(int Id)
+        {
+            return await _httpService.Delete<int>("/api/WeatherForecast/" + Id);
         }
     }
 }
